@@ -6,31 +6,15 @@ workflows:
       flutter: stable
       java: 17
     scripts:
-      - name: Block Old Files and Force Gradle 9.3.1
+      - name: Clean Build and Force Gradle 9.3.1
         script: |
-          mkdir -p android/gradle/wrapper
-          rm -f android/gradle/wrapper/gradle-wrapper.properties
-          echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
-          echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "distributionUrl=https\:\/\/services.gradle.org\/distributions\/gradle-9.3.1-bin.zip" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
-          echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
-          mkdir -p android
-          echo "flutter.sdk=$FLUTTER_ROOT" > "$CM_BUILD_DIR/android/local.properties"
-      - name: Get packages
-        script: |
+          cd android
+          rm -rf .gradle build app/build
+          mkdir -p gradle/wrapper
+          echo "distributionUrl=https\:\/\/services.gradle.org\/distributions\/gradle-9.3.1-bin.zip" > gradle/wrapper/gradle-wrapper.properties
+          cd ..
           flutter pub get
-      - name: Build APK
-        script: |
           flutter build apk --release --android-skip-build-dependency-validation
     artifacts:
       - build/**/outputs/**/*.apk
-      - build/app/outputs/flutter-apk/*.apk
       - "**/*.apk"
-    publishing:
-      email:
-        recipients:
-          - rwasifdsz.2006@gmail.com
-        notify:
-          success: true
-          failure: true
