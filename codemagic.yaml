@@ -5,10 +5,16 @@ workflows:
     instance_type: linux_x2
     environment:
       flutter: stable
-      java: 17
+      java: 1.17
     scripts:
-      - name: Set up Android environment
+      - name: Force Java 17 and Set up Environment
         script: |
+          LATEST_JAVA_17=$(ls -d /usr/lib/jvm/java-17-openjdk-* | head -n 1)
+          if [ -d "$LATEST_JAVA_17" ]; then
+            export JAVA_HOME="$LATEST_JAVA_17"
+            export PATH="$JAVA_HOME/bin:$PATH"
+          fi
+          java -version
           mkdir -p android
           echo "flutter.sdk=$FLUTTER_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get packages
