@@ -1,29 +1,21 @@
 workflows:
   android-release:
-    name: DSZ Safe Chat Android Build
+    name: DSZ Safe Chat Build
     max_build_duration: 60
     environment:
       flutter: stable
       java: 17
     scripts:
-      - name: Set up Android environment
-        script: |
-          mkdir -p android
-          echo "flutter.sdk=$FLUTTER_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get packages
         script: |
           flutter pub get
-      - name: Build Android APK
+      - name: Build APK
         script: |
-          flutter build apk --release
+          flutter build apk --release --no-pub
     artifacts:
       - build/**/outputs/**/*.apk
       - build/app/outputs/flutter-apk/*.apk
-      - "**/*.apk"
     publishing:
       email:
         recipients:
           - rwasifdsz.2006@gmail.com
-        notify:
-          success: true
-          failure: true
