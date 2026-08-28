@@ -7,11 +7,6 @@ workflows:
       flutter: stable
       java: 17
     scripts:
-      - name: Force Gradle 8.10 Version
-        script: |
-          if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
-            sed -i 's/distributionUrl=.*\/gradle-.*-bin.zip/distributionUrl=https\:\/\/services.gradle.org\/distributions\/gradle-8.10-bin.zip/g' android/gradle/wrapper/gradle-wrapper.properties
-          fi
       - name: Set up Android environment
         script: |
           mkdir -p android
