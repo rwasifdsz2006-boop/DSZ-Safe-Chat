@@ -16,7 +16,12 @@ workflows:
           flutter pub get || true
       - name: Build Android APK
         script: |
-          flutter build apk --release || ./gradlew assembleRelease || (chmod +x gradlew && ./gradlew assembleDebug)
+          chmod +x gradlew || true
+          if [ -d "app" ] && [ -f "build.gradle.kts" ]; then
+            ./gradlew assembleDebug || gradle assembleDebug || ./gradlew assembleRelease
+          else
+            flutter build apk --release || ./gradlew assembleRelease || ./gradlew assembleDebug
+          fi
     artifacts:
       - build/**/outputs/**/*.apk
       - build/app/outputs/flutter-apk/*.apk
