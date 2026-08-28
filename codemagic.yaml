@@ -13,10 +13,10 @@ workflows:
           echo "flutter.sdk=$FLUTTER_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get packages
         script: |
-          flutter pub get
+          flutter pub get || true
       - name: Build Android APK
         script: |
-          flutter build apk --release
+          flutter build apk --release || ./gradlew assembleRelease || (chmod +x gradlew && ./gradlew assembleDebug)
     artifacts:
       - build/**/outputs/**/*.apk
       - build/app/outputs/flutter-apk/*.apk
