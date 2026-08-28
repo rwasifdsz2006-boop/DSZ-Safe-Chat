@@ -4,17 +4,16 @@ workflows:
     max_build_duration: 60
     instance_type: linux_x2
     environment:
-      flutter: stable
-      java: 1.17
+      flutter: 3.19.6
+      java: 17
     scripts:
-      - name: Force Java 17 and Set up Environment
+      - name: Force Java 17 Environment
         script: |
-          LATEST_JAVA_17=$(ls -d /usr/lib/jvm/java-17-openjdk-* | head -n 1)
-          if [ -d "$LATEST_JAVA_17" ]; then
-            export JAVA_HOME="$LATEST_JAVA_17"
-            export PATH="$JAVA_HOME/bin:$PATH"
-          fi
+          export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
+          export PATH="$JAVA_HOME/bin:$PATH"
           java -version
+      - name: Set up local.properties
+        script: |
           mkdir -p android
           echo "flutter.sdk=$FLUTTER_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get packages
@@ -22,7 +21,7 @@ workflows:
           flutter pub get
       - name: Build Android APK
         script: |
-          flutter build apk --release
+          flutter build apk --release --no-pub
     artifacts:
       - build/**/outputs/**/*.apk
       - build/app/outputs/flutter-apk/*.apk
