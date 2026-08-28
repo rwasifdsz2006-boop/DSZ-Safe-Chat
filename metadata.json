@@ -1,0 +1,7 @@
+{
+  "name": "DSZ Save Chat",
+  "description": "Offline chat saver app by M Wasif DSZ featuring dual themes, multi-language support (English and Urdu), and instant chat archive management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
