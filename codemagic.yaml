@@ -7,11 +7,11 @@ workflows:
       flutter: stable
       java: 17
     scripts:
-      - name: Force Java 17 and Clean Gradle Cache
+      - name: Force Gradle 8.10 Version
         script: |
-          export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
-          export PATH="$JAVA_HOME/bin:$PATH"
-          java -version
+          if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
+            sed -i 's/distributionUrl=.*\/gradle-.*-bin.zip/distributionUrl=https\:\/\/services.gradle.org\/distributions\/gradle-8.10-bin.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+          fi
       - name: Set up Android environment
         script: |
           mkdir -p android
