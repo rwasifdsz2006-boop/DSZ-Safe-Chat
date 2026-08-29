@@ -1,3 +1,10 @@
+workflows:
+  android-release:
+    name: DSZ Safe Chat Build
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      java: 17
     scripts:
       - name: Get Flutter Packages
         script: |
@@ -5,3 +12,6 @@
       - name: Build Android APK
         script: |
           flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - "**/*.apk"
