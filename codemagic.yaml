@@ -1,20 +1,7 @@
-workflows:
-  android-release:
-    name: DSZ Safe Chat Build
-    max_build_duration: 60
-    environment:
-      flutter: stable
-      java: 17
     scripts:
-      - name: Clean Build and Force Gradle 9.3.1
+      - name: Get Flutter Packages
         script: |
-          cd android
-          rm -rf .gradle build app/build
-          mkdir -p gradle/wrapper
-          echo "distributionUrl=https\:\/\/services.gradle.org\/distributions\/gradle-9.3.1-bin.zip" > gradle/wrapper/gradle-wrapper.properties
-          cd ..
           flutter pub get
-          flutter build apk --release --android-skip-build-dependency-validation
-    artifacts:
-      - build/**/outputs/**/*.apk
-      - "**/*.apk"
+      - name: Build Android APK
+        script: |
+          flutter build apk --release
