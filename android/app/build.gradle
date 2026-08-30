@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         applicationId "com.aistudio.dszsavechat.app"
-        minSdk 28
+        minSdk 31
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
