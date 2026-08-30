@@ -11,6 +11,8 @@ workflows:
           flutter pub get
       - name: Build Android APK
         script: |
+        flutter clean
+        flutter pub git
           flutter build apk --release --android-skip-build-dependency-validation
     artifacts:
       - build/**/outputs/**/*.apk
