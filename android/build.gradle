@@ -17,3 +17,15 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core' && details.requested.name == 'core') {
+                details.useVersion '1.13.1'
+            }
+            if (details.requested.group == 'androidx.fragment' && details.requested.name == 'fragment') {
+                details.useVersion '1.8.2'
+            }
+        }
+    }
+}
