@@ -13,6 +13,9 @@ workflows:
         script: |
          flutter clean
          flutter pub get
+         cd android
+         ./gradlew clean
+         cd ..
          flutter build apk --release --android-skip-build-dependency-validation
     artifacts:
       - build/**/outputs/**/*.apk
