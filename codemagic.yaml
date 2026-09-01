@@ -1,22 +1,27 @@
 workflows:
-  android-workflow:
-    name: Android Build
+  android-release:
+    name: DSZ Safe Chat Build
     max_build_duration: 60
-    instance_type: mac_mini_m1
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+      java: 17
     scripts:
-      - name: Build Android App
+      - name: Prepare & Permissions
         script: |
-          pkill -9 -f gradle || true
-          rm -rf ~/.gradle/caches/
-          
-          # Root aur app folder dono mein debug keystore generate kar ke rakh do taake key ka masla kabhi na aaye
-          keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000 || true
-          mkdir -p app
-          cp debug.keystore app/debug.keystore || true
-
-          gradle wrapper --gradle-version 9.3.1
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          chmod +x android/gradlew 2>/dev/null || true
+          flutter clean
+          flutter pub get
+      - name: Build Android Release APK
+        script: |
+          flutter build apk --release --no-tree-shake-icons --android-skip-build-dependency-validation
     artifacts:
-      - app/build/outputs/apk/debug/*.apk
-      
+      - build/**/outputs/**/*.apk
+      - "**/*.apk"
+    publishing:
+      email:
+        recipients:
+          - rwasifdsz.2006@gmail.com
+        notify:
+          success: true
+          failure: true
