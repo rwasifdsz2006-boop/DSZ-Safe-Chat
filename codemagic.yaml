@@ -6,13 +6,12 @@ workflows:
     environment:
       flutter: stable
       java: 17
-    scripts:
-      - name: Fetch and Clean
+      - name: Prepare & Permissions
         script: |
           chmod +x android/gradlew 2>/dev/null || true
           flutter clean
           flutter pub get
-      - name: Build Android APK
+      - name: Build Android Release APK
         script: |
           flutter build apk --release --no-tree-shake-icons --android-skip-build-dependency-validation
     artifacts:
